@@ -14,8 +14,10 @@ app.use(bodyParser.json());
 // Auth routes
 const authRoutes = require('./Routes/auth_routes/auth_routes');
 const groceryRoutes = require('./Routes/grocery_routes/grocery_routes');
+const itemsRoutes = require('./Routes/items_routes/items_routes');
 app.use('/api/auth', authRoutes);
 app.use('/api/grocery', groceryRoutes);
+app.use('/api/grocery-category', itemsRoutes);
 
 const port = process.env.PORT || 5000;
 

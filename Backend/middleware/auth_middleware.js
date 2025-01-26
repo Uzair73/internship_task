@@ -15,7 +15,7 @@ const authMiddleware = async (req, res, next) => {
         console.log("Decoded token:", decoded)
         const userId = decoded.user.id
         const user = await User.findById(userId)
-        console.log("User found:", user)
+        // console.log("User found:", user)
         if (!user) {
             return res.status(401).json({ success: false, message: "Invalid token" })
         }
