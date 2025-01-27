@@ -7,8 +7,9 @@ import { FaPlus } from "react-icons/fa6";
 import Modal_2 from '../component/Modal_2';
 import { MdDelete } from "react-icons/md";
 import { FaCheckCircle } from "react-icons/fa";
-import { fetchCategoryItems } from '../../apis/api_handler';
+import { deleteAssociatedItem, fetchCategoryItems } from '../../apis/api_handler';
 import Cookies from 'js-cookie';
+import Swal from 'sweetalert2';
 
 const Dashboard = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -58,6 +59,67 @@ const Dashboard = () => {
     );
   };
 
+  const handleDeleteItem = async (listId) => {
+    const token = Cookies.get('auth_token');
+    try {
+      const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      });
+      if (result.isConfirmed) {
+        const response = await deleteAssociatedItem(token, listId);
+        if (response.success) {
+          Swal.fire(
+            'Deleted!',
+            'Your item has been deleted.',
+            'success'
+          );
+          setLists(prevLists => prevLists.filter(list => list._id !== listId));
+        } else {
+          Swal.fire(
+            'Error!',
+            'There was a problem deleting the item.',
+            'error'
+          );
+        }
+      }
+    } catch (error) {
+      console.error('Error deleting item:', error);
+      Swal.fire(
+        'Error!',
+        'There was a problem deleting the item.',
+        'error'
+      );
+    }
+  };
+
+  // Define the addList function
+  const addList = (newList) => {
+    setLists((prevLists) => [...prevLists, newList]);
+  };
+
+  const renderItems = (items) => {
+    return items.map((item, index) => (
+      <li key={item.id} className="flex items-center justify-between">
+        <span className={`cursor-pointer ${item.completed ? "line-through text-gray-500" : "text-gray-700"}`}>
+          {Array.isArray(item.item) ? item.item.join(', ') : ''} - Priority: {item.priority}
+        </span>
+        <span>
+          {item.completed ? (
+            <FaCheckCircle className="text-green-500 text-xl mr-3 cursor-pointer" />
+          ) : (
+            <input type="radio" className="mr-3 cursor-pointer" />
+          )}
+        </span>
+      </li>
+    ));
+  };
+
   return (
     <>
       <section>
@@ -86,7 +148,7 @@ const Dashboard = () => {
                               <h4 className="font-semibold text-xl sm:text-2xl">{list.title}</h4>
                               <MdDelete
                                 className="text-2xl sm:text-3xl text-red-500 cursor-pointer"
-                                onClick={() => console.log(`Delete list with ID: ${list._id}`)}
+                                onClick={() => handleDeleteItem(list._id)}
                               />
                             </div>
                             <ul className="list-none space-y-3 mt-3">
@@ -134,7 +196,7 @@ const Dashboard = () => {
               <>
                 <div className="fixed inset-0 bg-black opacity-50 z-40" onClick={() => setIsModalOpen(false)}></div>
                 <div className="fixed inset-0 flex items-center justify-center z-50">
-                  <Modal_2 onClose={() => setIsModalOpen(false)} />
+                  <Modal_2 addList={addList} onClose={() => setIsModalOpen(false)} />
                 </div>
               </>
             )}

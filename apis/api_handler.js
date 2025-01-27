@@ -72,9 +72,14 @@ export const deleteCategory = async (id, token) => {
 }
 
 // add the associated items to th category api handler
-export const addAssociatedItems = async (category, title, item,priority,token) => {
+export const addAssociatedItems = async (category, title, item, priority, token) => {
     try {
-        const response = await axios.post(`${host}api/grocery-category/add_item`, {category,title,item,priority}, {
+        const response = await axios.post(`${host}api/grocery-category/add_item`, {
+            category, // Ensure this is the correct parameter name expected by the backend
+            title,
+            item,
+            priority
+        }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -85,7 +90,7 @@ export const addAssociatedItems = async (category, title, item,priority,token) =
         console.error('Error during adding associated item:', error.message);
         throw error;
     }
-}
+};
 
 // fetch the associated item api handler
 export const fetchCategoryItems = async (token, categoryId) => {

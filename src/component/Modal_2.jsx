@@ -2,27 +2,20 @@ import { useState, useEffect } from 'react';
 import { ImCross } from 'react-icons/im';
 import Button from './Button';
 import Cookies from 'js-cookie';
-import { addAssociatedItems, fetchCategories } from '../../apis/api_handler';
+import { addAssociatedItems } from '../../apis/api_handler';
+import Swal from 'sweetalert2';
 
-const Modal_2 = ({ addList, onClose , classname, category_id}) => {
+const Modal_2 = ({ addList, onClose, classname }) => {
   const [listTitle, setListTitle] = useState('');
   const [itemName, setItemName] = useState('');
   const [items, setItems] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [selectedCategoryId, setSelectedCategoryId] = useState('');
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
   useEffect(() => {
-    const fetchCategoryData = async () => {
-      try {
-        const res_category_data = localStorage.getItem("category_id");
-        console.log("data of category id>>", res_category_data);
-        setCategories(res_category_data || []);
-        setSelectedCategoryId(res_category_data)
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
-    fetchCategoryData();
+    const storedCategoryId = localStorage.getItem('category_id');
+    if (storedCategoryId) {
+      setSelectedCategoryId(storedCategoryId);
+    }
   }, []);
 
   const add_item = () => {
@@ -36,26 +29,53 @@ const Modal_2 = ({ addList, onClose , classname, category_id}) => {
     setItems((prevItems) => prevItems.filter((_, i) => i !== index));
   };
 
+  const isFormValid = listTitle.trim() !== '' && items.length > 0 && selectedCategoryId !== null;
+
   const submit_form = async (e) => {
     e.preventDefault();
+    if (!isFormValid) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Invalid form data, please check your entries!',
+      });
+      console.error('Invalid form data');
+      return;
+    }
     const token = Cookies.get('auth_token');
-
-    if (listTitle.trim() && items.length > 0 && selectedCategoryId) {
-      try {
-        const itemNames = items.map((item) => item.name);
-        await addAssociatedItems(selectedCategoryId, listTitle.trim(), itemNames, 'high', token);
+    const itemNames = items.map((item) => item.name);
+    try {
+      console.log('Submitting:', { selectedCategoryId, listTitle, itemNames });
+      const response = await addAssociatedItems(selectedCategoryId, listTitle.trim(), itemNames, 'high', token);
+      if (response.success) {
         addList({ title: listTitle.trim(), items: itemNames });
         setListTitle('');
         setItems([]);
         onClose();
-      } catch (error) {
-        console.error('Error adding associated items:', error);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Your list has been added.',
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed to add list',
+          text: response.message || 'There was an error processing your request.',
+        });
       }
+    } catch (error) {
+      console.error('Error adding associated items:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'There was a problem adding the list.',
+      });
     }
   };
 
   return (
-    <div className={`bg-white px-7 min-w-[30vw] py-3 rounded-2xl`}>
+    <div className={`bg-white px-6 py-3 rounded-2xl min-w-[30vw]`}>
       <div className="flex justify-between items-center text-start">
         <h3 className="text-lg font-semibold text-gray-900">Add New List</h3>
         <ImCross className="text-gray-600 text-sm cursor-pointer" onClick={onClose} />
@@ -115,16 +135,17 @@ const Modal_2 = ({ addList, onClose , classname, category_id}) => {
           )}
         </div>
 
-        <Button
+        <button
           type="submit"
-          disabled={!listTitle || items.length === 0 || !selectedCategoryId}
-          classname={`w-full text-white font-medium rounded-lg text-sm px-5 py-2.5 ${
-            listTitle && items.length > 0 && selectedCategoryId
+          disabled={!isFormValid}
+          className={`w-full text-white font-medium rounded-lg text-sm px-5 py-2.5 ${
+            isFormValid
               ? 'bg-[#059669] hover:bg-[#047857] cursor-pointer'
               : 'bg-gray-300 cursor-not-allowed'
           }`}
-          btn_text={"Create List"}
-        />
+        >
+          Create List
+        </button>
       </form>
     </div>
   );

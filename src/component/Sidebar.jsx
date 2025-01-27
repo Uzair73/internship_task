@@ -117,18 +117,22 @@ const Sidebar = ({ onCategorySelect }) => {
         <FaPlus className='text-2xl text-green-400 cursor-pointer' onClick={showModal} />
       </div>
       {isModalOpen && <Modal addCategory={addNewCategory} closeModal={hideModal} refreshCategories={fetchAndSetCategories} />}
-      <ul>
-        {categories.map((category, index) => (
-          <li key={index} className="flex justify-between items-center px-4 my-2">
-            <Button
-              classname='w-full hover:bg-gray-50 px-3 py-2 mx-2 rounded-md cursor-pointer text-start text-lg font-[400]'
-              btn_text={category.Category_Name}
-              onClick={() => onCategoryClicked(category)}
-            />
-            <ImCross className='text-sm cursor-pointer' onClick={() => delete_category(index)} />
-          </li>
-        ))}
-      </ul>
+      {categories.length > 0 ? (
+        <ul>
+          {categories.map((category, index) => (
+            <li key={index} className="flex justify-between items-center px-4 my-2">
+              <Button
+                classname='w-full hover:bg-gray-50 px-3 py-2 mx-2 rounded-md cursor-pointer text-start text-lg font-[400]'
+                btn_text={category.Category_Name}
+                onClick={() => onCategoryClicked(category)}
+              />
+              <ImCross className='text-sm cursor-pointer' onClick={() => delete_category(index)} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-center text-gray-500">No categories available</p>
+      )}
     </aside>
   );
 };
