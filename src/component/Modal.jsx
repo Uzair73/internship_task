@@ -24,10 +24,10 @@ const Modal = ({ closeModal, refreshCategories }) => {
   }
 
   return (
-    <div className="my-5 bg-[#f9fafb] p-4 shadow-lg rounded-lg z-10">
-    <div className="flex justify-bewteen items-center gap-14">
-      <h3 className="text-lg font-semibold text-gray-900">New Category</h3>
-      <ImCross className='text-sm cursor-pointer' onClick={closeModal}/>
+    <div className="my-5 bg-[#f9fafb] p-4 shadow-lg rounded-lg z-10 mx-auto max-w-md w-full">
+      <div className="flex justify-between items-center">
+        <h3 className="text-lg font-semibold text-gray-900 flex-grow">New Category</h3>
+        <ImCross className='text-lg cursor-pointer' onClick={closeModal}/>
       </div>
       <form onSubmit={handleSubmit} className="mt-3">
         <input
@@ -41,7 +41,7 @@ const Modal = ({ closeModal, refreshCategories }) => {
         />
         <Button
           type="submit"
-          classname="mt-2 text-white bg-[#059669] hover:bg-[#047857] font-medium rounded-lg text-sm px-5 py-2.5 cursor-pointer"
+          classname="mt-2 text-white bg-[#059669] hover:bg-[#047857] font-medium rounded-lg text-sm px-5 py-2.5 cursor-pointer w-full"
           btn_text={"Add Category"}
         />
       </form>

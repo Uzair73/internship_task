@@ -34,10 +34,10 @@ const Steps = () => {
 
   return (
     <section className="bg-[#f9fafb] py-20">
-        <h1 className='text-4xl font-bold mb-3'>How GrocerySave Works</h1>
-        <p className='text-2xl'>Get started in minutes and save hours every week</p>
-      <div className="container mx-auto flex gap-10 py-20">
-        <div className="w-102">
+        <h1 className='text-4xl font-bold mb-3 text-center'>How GrocerySave Works</h1>
+        <p className='text-2xl text-center'>Get started in minutes and save hours every week</p>
+      <div className="container mx-auto flex flex-col md:flex-row gap-10 py-20">
+        <div className="md:w-1/4">
           {steps.map((step, index) => (
             <div
               key={index}
@@ -53,12 +53,12 @@ const Steps = () => {
             </div>
           ))}
         </div>
-        <div className="w-3/4 bg-white rounded-xl border border-gray-200 shadow-md py-10 px-10">
+        <div className="flex-1 bg-white rounded-xl border border-gray-200 shadow-md py-10 px-4 sm:px-10">
           <h3 className="text-2xl font-bold mb-4 text-start">{steps[currentStep].title}</h3>
           <p className="text-lg mb-6 text-start">{steps[currentStep].description}</p>
-          <div className="flex justify-center gap-4 mb-6">
+          <div className="flex flex-wrap justify-center gap-4 mb-6">
             {steps[currentStep].details.map((detail, index) => (
-              <div key={index} className="bg-gray-100 hover:bg-green-50 px-20 py-9 rounded-lg">
+              <div key={index} className="bg-gray-100 hover:bg-green-50 px-6 py-3 rounded-lg">
                 <span className="">{detail}</span>
               </div>
             ))}

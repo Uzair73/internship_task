@@ -78,20 +78,20 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-green-50">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-green-50 px-4 sm:px-6 lg:px-8">
       <img src="/logo.svg" alt="logo" className="w-16 h-16 mb-3" />
-      <div className="text-3xl font-bold mb-4">Create your account</div>
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
+      <div className="text-3xl font-bold mb-4 text-center">Create your account</div>
+      <div className="bg-white p-8 rounded shadow-md w-full max-w-md mx-auto">
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="flex text-gray-700 mb-2">Full name</label>
+            <label className="text-gray-700 mb-2 flex">Full name</label>
             <div className="relative">
               <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
                 name="fullName"
                 type="text"
                 placeholder="John Doe"
-                className="w-full px-10 py-2 border rounded focus:outline-none"
+                className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none"
                 onChange={handleInputChange}
                 value={formData.fullName}
               />
@@ -105,7 +105,7 @@ const Signup = () => {
                 name="email"
                 type="email"
                 placeholder="you@example.com"
-                className="w-full px-10 py-2 border rounded focus:outline-none"
+                className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none"
                 onChange={handleInputChange}
                 value={formData.email}
               />
@@ -119,7 +119,7 @@ const Signup = () => {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
-                className="w-full px-10 py-2 border rounded focus:outline-none"
+                className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none"
                 onChange={handleInputChange}
                 value={formData.password}
               />
@@ -139,7 +139,7 @@ const Signup = () => {
                 name="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="••••••••"
-                className="w-full px-10 py-2 border rounded focus:outline-none"
+                className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none"
                 onChange={handleInputChange}
                 value={formData.confirmPassword}
               />

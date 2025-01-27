@@ -61,33 +61,31 @@ const Dashboard = () => {
   return (
     <>
       <section>
-        <div className="flex py-16">
-          <div className="flex">
-            <Sidebar onCategorySelect={handleCategorySelection} />
-          </div>
-          <main className="flex-1 bg-gray-100 min-h-screen relative">
+        <div className="flex flex-col sm:flex-row py-16">
+          <Sidebar onCategorySelect={handleCategorySelection} />
+          <main className="flex-grow bg-gray-100 lg:min-h-screen relative">
             <Navbar />
-            <div className={`p-8 my-8 ${selectedCategory ? "flex" : "mx-auto w-[77vw] bg-gray-50 border-4 border-dotted border-gray-300 rounded-lg"} `}>
+            <div className={`p-4 sm:p-8 my-8 ${selectedCategory ? "flex flex-col items-center" : "mx-auto max-w-4xl bg-gray-50 border-4 border-dotted border-gray-300 rounded-lg"} `}>
               {selectedCategory ? (
                 <>
                   {isLoading ? (
-                    <div className="flex justify-center mx-auto items-center">
+                    <div className="flex justify-center items-center h-full">
                       <FaSpinner className="animate-spin" />
                     </div>
                   ) : (
-                    <div className="flex flex-col items-center">
-                      <div className="flex items-center border border-white text-white rounded-lg bg-[#059669] px-11 py-1 mb-4">
-                        <FaPlus className='text-2xl' />
+                    <div className="flex flex-col items-center w-full">
+                      <div className="flex items-center border border-white text-white rounded-lg bg-[#059669] px-6 py-1 mb-4">
+                        <FaPlus className='text-xl sm:text-2xl' />
                         <Button classname={"cursor-pointer"} btn_text={"Add List"} onClick={() => setIsModalOpen(true)} />
                       </div>
                       {/* Render the fetched items here */}
-                      <div className="flex flex-col gap-4 w-[78vw]">
+                      <div className="flex flex-col gap-4 w-full">
                         {lists.map((list, listIndex) => (
                           <div key={list._id} className="bg-white p-4 rounded-lg shadow mb-4">
                             <div className="flex justify-between items-center w-full gap-4">
-                              <h4 className="font-semibold text-2xl">{list.title}</h4>
+                              <h4 className="font-semibold text-xl sm:text-2xl">{list.title}</h4>
                               <MdDelete
-                                className="text-3xl text-red-500 cursor-pointer"
+                                className="text-2xl sm:text-3xl text-red-500 cursor-pointer"
                                 onClick={() => console.log(`Delete list with ID: ${list._id}`)}
                               />
                             </div>
@@ -108,7 +106,7 @@ const Dashboard = () => {
                                     ) : (
                                       <input
                                         type="radio"
-                                        className="mr-5 cursor-pointer"
+                                        className="mr-3 cursor-pointer"
                                         onClick={() => toggleItemCompletion(listIndex, itemIndex)}
                                       />
                                     )}

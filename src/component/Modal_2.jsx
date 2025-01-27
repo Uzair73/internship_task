@@ -55,7 +55,7 @@ const Modal_2 = ({ addList, onClose , classname, category_id}) => {
   };
 
   return (
-    <div className={`${classname}`}>
+    <div className={`bg-white px-7 min-w-[30vw] py-3 rounded-2xl`}>
       <div className="flex justify-between items-center text-start">
         <h3 className="text-lg font-semibold text-gray-900">Add New List</h3>
         <ImCross className="text-gray-600 text-sm cursor-pointer" onClick={onClose} />
@@ -115,17 +115,16 @@ const Modal_2 = ({ addList, onClose , classname, category_id}) => {
           )}
         </div>
 
-        <button
+        <Button
           type="submit"
           disabled={!listTitle || items.length === 0 || !selectedCategoryId}
-          className={`w-full text-white font-medium rounded-lg text-sm px-5 py-2.5 ${
+          classname={`w-full text-white font-medium rounded-lg text-sm px-5 py-2.5 ${
             listTitle && items.length > 0 && selectedCategoryId
               ? 'bg-[#059669] hover:bg-[#047857] cursor-pointer'
               : 'bg-gray-300 cursor-not-allowed'
           }`}
-        >
-          Create List
-        </button>
+          btn_text={"Create List"}
+        />
       </form>
     </div>
   );

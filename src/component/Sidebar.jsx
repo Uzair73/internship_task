@@ -111,7 +111,7 @@ const Sidebar = ({ onCategorySelect }) => {
   const onCategoryClicked = category => onCategorySelect(category);
 
   return (
-    <aside className="bg-white text-black w-64 min-h-screen p-4">
+    <aside className="bg-white text-black sm:w-64 w-full lg:min-h-screen p-4">
       <div className="flex justify-between px-3 py-8">
         <h1 className='text-xl'>Categories</h1>
         <FaPlus className='text-2xl text-green-400 cursor-pointer' onClick={showModal} />
