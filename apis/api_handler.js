@@ -70,3 +70,51 @@ export const deleteCategory = async (id, token) => {
         throw error
     }
 }
+
+// add the associated items to th category api handler
+export const addAssociatedItems = async (category, title, item,priority,token) => {
+    try {
+        const response = await axios.post(`${host}api/grocery-category/add_item`, {category,title,item,priority}, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        console.log("api data of the associated item added>>", response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error during adding associated item:', error.message);
+        throw error;
+    }
+}
+
+// fetch the associated item api handler
+export const fetchCategoryItems = async (token, categoryId) => {
+    try {
+        const response = await axios.get(`${host}api/grocery-category/fetch_items/${categoryId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        console.log("api data of the fetched category items>>", response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error during fetching category items:', error.message);
+        throw error;
+    }
+}
+
+// delete the associated item api handler
+export const deleteAssociatedItem = async (token, categeory_id) => {
+    try {
+        const response = await axios.delete(`${host}api/grocery-category/category/${categeory_id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        console.log("api data of the deleted associated item>>", response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error during deleting associated item:', error.message);
+        throw error;
+    }
+}

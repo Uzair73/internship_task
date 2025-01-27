@@ -6,6 +6,7 @@ import Button from './Button';
 import { deleteCategory, fetchCategories } from '../../apis/api_handler';
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
+import Modal_2 from './Modal_2';
 
 const Sidebar = ({ onCategorySelect }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,7 +18,7 @@ const Sidebar = ({ onCategorySelect }) => {
       try {
         const response = await fetchCategories(token);
         if (response.success && Array.isArray(response.data)) {
-          setCategories(response.data)
+          setCategories(response.data);
         } else {
           console.error('Unexpected response format:', response);
           setCategories([]);
@@ -65,15 +66,11 @@ const Sidebar = ({ onCategorySelect }) => {
   const delete_category = async indexToRemove => {
     const categoryToDelete = categories[indexToRemove];
     const token = Cookies.get('auth_token');
-  
-    console.log('Category to delete:', categoryToDelete);
-    console.log('Auth token:', token);
-  
+
     if (categoryToDelete?._id && token) {
       try {
         const response = await deleteCategory(categoryToDelete._id, token);
-        console.log('Delete API response:', response);
-  
+
         if (response.success) {
           setCategories(categories.filter((_, index) => index !== indexToRemove));
           Swal.fire({
@@ -111,7 +108,7 @@ const Sidebar = ({ onCategorySelect }) => {
     }
   };
 
-  const onCategoryClicked = categoryName => onCategorySelect(categoryName);
+  const onCategoryClicked = category => onCategorySelect(category);
 
   return (
     <aside className="bg-white text-black w-64 min-h-screen p-4">
@@ -126,7 +123,7 @@ const Sidebar = ({ onCategorySelect }) => {
             <Button
               classname='w-full hover:bg-gray-50 px-3 py-2 mx-2 rounded-md cursor-pointer text-start text-lg font-[400]'
               btn_text={category.Category_Name}
-              onClick={() => onCategoryClicked(category.Category_Name)}
+              onClick={() => onCategoryClicked(category)}
             />
             <ImCross className='text-sm cursor-pointer' onClick={() => delete_category(index)} />
           </li>

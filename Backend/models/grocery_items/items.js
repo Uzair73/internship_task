@@ -6,10 +6,10 @@ const ListSchema = new mongoose.Schema({
     required: true
     },
   item: { 
-    type: String, 
+    type: [String], 
     required: true 
   },
-  priority: { 
+  priority: {   
     type: String, 
     default: "Medium"
   },
