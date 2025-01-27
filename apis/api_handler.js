@@ -1,5 +1,6 @@
 import axios from "axios";
-const host = "http://localhost:5000/"
+// const host = "http://localhost:5000/"
+const host = "https://grocerysavebackend.vercel.app/"
 // signup api handler
 export const signup = async (Full_Name,Email_Address,Password,Confirm_Password) => {
     try {
