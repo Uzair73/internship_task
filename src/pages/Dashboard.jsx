@@ -100,24 +100,7 @@ const Dashboard = () => {
 
   // Define the addList function
   const addList = (newList) => {
-    setLists((prevLists) => [...prevLists, newList]);
-  };
-
-  const renderItems = (items) => {
-    return items.map((item, index) => (
-      <li key={item.id} className="flex items-center justify-between">
-        <span className={`cursor-pointer ${item.completed ? "line-through text-gray-500" : "text-gray-700"}`}>
-          {Array.isArray(item.item) ? item.item.join(', ') : ''} - Priority: {item.priority}
-        </span>
-        <span>
-          {item.completed ? (
-            <FaCheckCircle className="text-green-500 text-xl mr-3 cursor-pointer" />
-          ) : (
-            <input type="radio" className="mr-3 cursor-pointer" />
-          )}
-        </span>
-      </li>
-    ));
+    setLists((prevLists) => [...prevLists, newList]);  
   };
 
   return (

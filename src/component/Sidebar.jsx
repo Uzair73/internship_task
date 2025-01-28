@@ -108,7 +108,13 @@ const Sidebar = ({ onCategorySelect }) => {
     }
   };
 
-  const onCategoryClicked = category => onCategorySelect(category);
+  const onCategoryClicked = category => {
+    localStorage.setItem('category_id', category._id)
+    console.log("category_id in the sidebar",localStorage.getItem("category_id"));
+    
+    onCategorySelect(category);
+  };
+  
 
   return (
     <aside className="bg-white text-black sm:w-64 w-full lg:min-h-screen p-4">

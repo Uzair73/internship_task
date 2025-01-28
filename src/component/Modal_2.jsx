@@ -13,6 +13,8 @@ const Modal_2 = ({ addList, onClose, classname }) => {
 
   useEffect(() => {
     const storedCategoryId = localStorage.getItem('category_id');
+    console.log("id of specific category in modal_2>>", storedCategoryId);
+    
     if (storedCategoryId) {
       setSelectedCategoryId(storedCategoryId);
     }
@@ -31,48 +33,50 @@ const Modal_2 = ({ addList, onClose, classname }) => {
 
   const isFormValid = listTitle.trim() !== '' && items.length > 0 && selectedCategoryId !== null;
 
-  const submit_form = async (e) => {
-    e.preventDefault();
-    if (!isFormValid) {
+  // ... existing code ...
+const submit_form = async (e) => {
+  e.preventDefault();
+  if (!isFormValid) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Invalid form data, please check your entries!',
+    });
+    console.error('Invalid form data');
+    return;
+  }
+  const token = Cookies.get('auth_token');
+  const itemNames = items.map((item) => item.name);
+  try {
+    console.log('Submitting:', { selectedCategoryId, listTitle, itemNames });
+    const response = await addAssociatedItems(selectedCategoryId, listTitle.trim(), itemNames, 'high', token);
+    if (response.success) {
+      addList({ _id: response.data._id, title: listTitle.trim(), item: itemNames, completed: false });
+      setListTitle('');
+      setItems([]);
+      onClose();
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Your list has been added.',
+      });
+    } else {
       Swal.fire({
         icon: 'error',
-        title: 'Oops...',
-        text: 'Invalid form data, please check your entries!',
-      });
-      console.error('Invalid form data');
-      return;
-    }
-    const token = Cookies.get('auth_token');
-    const itemNames = items.map((item) => item.name);
-    try {
-      console.log('Submitting:', { selectedCategoryId, listTitle, itemNames });
-      const response = await addAssociatedItems(selectedCategoryId, listTitle.trim(), itemNames, 'high', token);
-      if (response.success) {
-        addList({ title: listTitle.trim(), items: itemNames });
-        setListTitle('');
-        setItems([]);
-        onClose();
-        Swal.fire({
-          icon: 'success',
-          title: 'Success!',
-          text: 'Your list has been added.',
-        });
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Failed to add list',
-          text: response.message || 'There was an error processing your request.',
-        });
-      }
-    } catch (error) {
-      console.error('Error adding associated items:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'There was a problem adding the list.',
+        title: 'Failed to add list',
+        text: response.message || 'There was an error processing your request.',
       });
     }
-  };
+  } catch (error) {
+    console.error('Error adding associated items:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'There was a problem adding the list.',
+    });
+  }
+};
+// ... existing code ...
 
   return (
     <div className={`bg-white px-6 py-3 rounded-2xl min-w-[30vw]`}>
